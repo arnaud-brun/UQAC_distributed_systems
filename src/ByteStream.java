@@ -100,6 +100,6 @@ public class ByteStream {
 			os.write(b, 0, numRead);
 		}
 		os.flush();
-		
+		is.close();
 	}
 }
