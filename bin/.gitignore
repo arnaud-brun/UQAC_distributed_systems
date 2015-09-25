@@ -2,3 +2,5 @@
 /Calc.class
 /Socket_Client.class
 /Socket_Serveur.class
+/TCPServer.class
+/TCPServerThread.class
