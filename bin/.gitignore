@@ -2,10 +2,6 @@
 /Calc.class
 /Socket_Client.class
 /Socket_Serveur.class
-<<<<<<< HEAD
+/TCPClient.class
 /TCPServer.class
 /TCPServerThread.class
-=======
-/TCPClient.class
->>>>>>> branch 'master' of https://github.com/nonoScriptor/UQAC_distributed_systems.git
-/Main.class
