@@ -2,6 +2,7 @@ import java.io.Serializable;
 
 public class Calc implements Serializable{
 
+	private static final long serialVersionUID = 935199113975988498L;
 	private String a;
 	private String b;
 	
