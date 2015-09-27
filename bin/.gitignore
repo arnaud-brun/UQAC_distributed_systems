@@ -3,3 +3,8 @@
 /Socket_Client.class
 /Socket_Serveur.class
 /TCPClient.class
+<<<<<<< HEAD
+=======
+/TCPServer.class
+/TCPServerThread.class
+>>>>>>> 84f6e240c2393b57eb70fd11e9d3565284db92a9
