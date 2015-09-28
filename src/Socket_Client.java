@@ -15,6 +15,9 @@ public class Socket_Client {
 }
 
 class TCPClient {
+	public static final int MAXIMUM = Integer.MAX_VALUE/2;
+	public static final int MINIMUM = Integer.MIN_VALUE/2;
+	
 	Socket ClientSoc;
 	
 	DataInputStream din;
@@ -90,9 +93,13 @@ class TCPClient {
 				System.out.println(instruction);
 				input = br.readLine();
 				validNumber = Integer.parseInt(input);
+				
+				if (validNumber < MINIMUM || validNumber > MAXIMUM)
+					throw new NumberFormatException();
+				
 				return input;
 			}catch(NumberFormatException | IOException e) {
-				System.out.println("\n /_!_\\ Veuillez rentrer un nombre entier, compris entre "+Integer.MIN_VALUE+" et "+Integer.MAX_VALUE+"");
+				System.out.println("\n /_!_\\ Veuillez rentrer un nombre entier, compris entre "+MINIMUM+" et "+MAXIMUM);
 			}			
 		}
 	}
