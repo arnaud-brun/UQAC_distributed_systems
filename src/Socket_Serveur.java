@@ -18,17 +18,17 @@ public class Socket_Serveur {
 }
 
 
-class TCPServer {
-	
+class TCPServer {	
 	
 	private Socket clientSoc;
 	private ServerSocket serverSoc;    
    	private int portNumber;
    	
+   	
    	public TCPServer(int port){
-   		this.portNumber = port;
-   		
+   		//initialize a ServerSocket with the given port
 		try {
+			this.portNumber = port;
 			this.serverSoc = new ServerSocket(this.portNumber);
 		} catch (IOException e) {
 			System.out.println("Failed to start ServerSocket");
@@ -38,11 +38,12 @@ class TCPServer {
 		
 		System.out.println("\nTCP Server Started on Port Number: " + this.portNumber);
 		
-		
+		//Wait for client connections ...
 		while(true)
         {
             System.out.println("Waiting for Connection ...");
             try {
+            	//Catch a client connection and delegate the client communication to a thread
 				this.clientSoc = serverSoc.accept();
 				TCPServerThread serverThread = new TCPServerThread(clientSoc);
 			} catch (IOException e) {
@@ -70,13 +71,17 @@ class TCPServerThread extends Thread
     {
         try
         {
+        	//Bind this thread to the given socket, to communicate with a client
             this.ClientSoc = soc;
             
+            //Instanciation of relative streams for Object IN, Data IN / OUT
             this.InObject = new ObjectInputStream (ClientSoc.getInputStream());
             this.InMethod = new DataInputStream(ClientSoc.getInputStream());
             this.dout = new DataOutputStream(ClientSoc.getOutputStream());
             
             System.out.println("TPC Client Connected ...");
+            
+            //Run the thread
             start();
         }
         catch(Exception ex)
@@ -94,30 +99,27 @@ class TCPServerThread extends Thread
     	String response = "";
     	
         while(true)
-        {
-        	
-        	
-        	// Get Object From client
+        {	
         	try {
-        		                
+        	
+        		// Get Object From client            
 				obj = this.InObject.readObject();				
                 if (! obj.getClass().getName().equals("Calc")){                	
                 	response = "The received class is not the <Calc> Class";
                 }                
                 System.out.println("----> received the class object : " + obj.getClass().getName());
                 
-                
-                
+                                
                 // Get Method name from client and check if method is valid
                 Boolean found = false;
                 methodName = this.InMethod.readUTF();
                 System.out.println("----> received the method : " + methodName);
                 Method[] methodList = obj.getClass().getMethods();
                 
-                for(int i = 0; i < methodList.length; i++){   
-                	
+                for(int i = 0; i < methodList.length; i++){
+             
                 	if (methodList[i].getName().equals(methodName)){
-                		//Do the stuff on the serialized object
+                		//If method is valid, execute it on the given object
                 		found = true;	
                 		Calc calcul = (Calc) obj;
                 		response = (String) this.execute(calcul, methodList[i]);                		
@@ -139,8 +141,8 @@ class TCPServerThread extends Thread
 				e.printStackTrace();
 			}
         	finally{        		
-        		
         		try {
+        			//Send the result of computation to the client
 					dout.writeUTF(response);
 				} catch (IOException e) {
 					System.out.println("Socket has been disconnected because we cannot write response");
@@ -152,16 +154,14 @@ class TCPServerThread extends Thread
     }
     
     
-    public Object execute(Object instance, Method toExec){
-    	
+    //Execute a given method on a given Object; returns result of Computation
+    public Object execute(Object instance, Method toExec){    	
     	try {			
 			Object res = null;   
 			res = (Integer)toExec.invoke(instance);
-			return res.toString();
-			
+			return res.toString();			
 		} catch (IllegalAccessException	| IllegalArgumentException | InvocationTargetException e) {
-			return "cannot invoke";
-			
+			return "cannot invoke";			
 		}
     }
     
